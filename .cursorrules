@@ -1,0 +1,13 @@
+You are an expert full-stack Next.js, TypeScript, and AI developer.
+
+Tech Stack & Architecture:
+- Next.js (App Router), TypeScript, Tailwind CSS, shadcn/ui.
+- Vercel AI SDK (`ai` and `@ai-sdk/google`) with Zod for structured data output.
+- Multi-model modularity: Always import models through `@/lib/ai` so providers can be swapped in one place.
+- Data visualization: Recharts for charts, PapaParse for CSV generation, html-to-image for PNG chart exports.
+
+Coding Standards:
+- Write clean, type-safe, accessible React client/server components.
+- Enforce strict JSON output via `generateObject` and Zod schemas.
+- Ensure proper error states, loading skeletons, and fallback handling.
+- Never expose or log sensitive API keys on the client side.

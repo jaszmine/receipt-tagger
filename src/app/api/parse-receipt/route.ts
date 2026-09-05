@@ -16,7 +16,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const { output } = await generateText({
+    const { output, usage } = await generateText({
       model: visionModel,
       output: Output.object({ schema: receiptSchema }),
       messages: [
@@ -28,13 +28,18 @@ export async function POST(req: Request) {
               text: 'Carefully analyze this receipt image. Extract the merchant name, transaction date (YYYY-MM-DD), currency code, each purchased line item with an appropriate category tag, the subtotal, taxes, and grand total. If tax or date cannot be found, make reasonable inferences based on standard defaults.',
             },
             {
-              type: 'image',
-              image: image,
+              type: 'file',
+              mediaType: 'image',
+              data: image,
             },
           ],
         },
       ],
     });
+
+    console.log('Prompt tokens:', usage.inputTokens);
+    console.log('Completion tokens:', usage.outputTokens);
+    console.log('Total tokens:', usage.totalTokens);
 
     return NextResponse.json({ success: true, data: output });
   } catch (error: any) {

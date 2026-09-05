@@ -37,18 +37,13 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 
 <table>
-  <colgroup>
-    <col style="width: 20%;"> <!-- Category column -->
-    <col style="width: 25%;"> <!-- Tool column -->
-    <col style="width: 15%;"> <!-- Version column -->
-    <col style="width: 40%;"> <!-- Description column -->
-  </colgroup>
+
   <thead>
     <tr>
-      <th>Category</th>
-      <th>Tool</th>
-      <th>Version</th>
-      <th>Description</th>
+      <th width="15%">Category</th>
+      <th width="25%">Tool</th>
+      <th width="20%">Version</th>
+      <th width="40%">Description</th>
     </tr>
     <!-- <tr>
       <th width="22%">Category</th>

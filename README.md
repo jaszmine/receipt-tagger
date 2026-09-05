@@ -37,30 +37,201 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Tech Stack
 
-
-| Category                                                                                                                       | Tool                                                                                                                    | Version                                                                                                                    | Description                                                                                                    |
-| ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| **Core UI, Framework & Runtime**                                                                                               | ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)              | `v16.3.4`                                                                                                                  | Full-stack React framework managing App Router navigation, serverless routes, and client bundling.             |
-| ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)                            | `v19.2.8`                                                                                                               | *(Library)* Core declarative UI engine managing component state, reactivity, and DOM reconciliation.                       |                                                                                                                |
-| ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)                     | `v24.11.0`                                                                                                              | JavaScript server runtime executing Next.js build scripts and local development server processes.                          |                                                                                                                |
-| **Language & Type Safety**                                                                                                     | ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)       | `v5.9.3`                                                                                                                   | Static typing system providing compile-time type safety across props, data structures, and API contracts.      |
-| ![Zod](https://img.shields.io/badge/Zod-3E67B1?style=for-the-badge&logo=zod&logoColor=white)                                   | `v4.5.4`                                                                                                                | *(Library)* Declarative TypeScript-first schema declaration and runtime object validation library.                         |                                                                                                                |
-| **AI & Multimodal Vision**                                                                                                     | ![Vercel AI SDK](https://img.shields.io/badge/Vercel_AI_SDK-000000?style=for-the-badge&logo=vercel&logoColor=white)     | `v7.0.92`                                                                                                                  | *(Library)* Model-agnostic AI integration SDK orchestrating structured multimodal outputs via `Output.object`. |
-| ![@ai-sdk/google](https://img.shields.io/badge/Google_Provider-4285F4?style=for-the-badge&logo=google&logoColor=white)         | `v4.0.63`                                                                                                               | *(Library)* Official Google AI provider binding the Vercel AI SDK to Gemini foundation models.                             |                                                                                                                |
-| ![Google Gemini](https://img.shields.io/badge/Google_Gemini-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white)      | `gemini-3.6-flash`                                                                                                      | Multimodal vision model parsing receipt images, performing OCR, and extracting structured line items.                      |                                                                                                                |
-| **Styling & Components**                                                                                                       | ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white) | `v4.3.3`                                                                                                                   | Utility-first CSS styling engine paired with `@tailwindcss/postcss` for optimized compilation.                 |
-| ![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-000000?style=for-the-badge&logo=shadcnui&logoColor=white)                | `v4.20.1`                                                                                                               | Component architecture CLI generating unstyled, customizable design primitives.                                            |                                                                                                                |
-| ![Lucide React](https://img.shields.io/badge/Lucide_React-F56565?style=for-the-badge&logo=lucide&logoColor=white)              | `v1.40.0`                                                                                                               | *(Library)* Lightweight SVG icon pack providing crisp UI glyphs for actions and status cues.                               |                                                                                                                |
-| ![Class Variance Authority](https://img.shields.io/badge/CVA-111827?style=for-the-badge&logo=styledcomponents&logoColor=white) | `v0.7.1`                                                                                                                | *(Library)* Utility for composing type-safe, variant-driven UI component classes.                                          |                                                                                                                |
-| ![tailwind-merge](https://img.shields.io/badge/tailwind--merge-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)   | `v3.6.0`                                                                                                                | *(Library)* Utility function for cleanly merging Tailwind classes without CSS specificity collisions (with `clsx v2.1.1`). |                                                                                                                |
-| **Visualization & Export**                                                                                                     | ![Recharts](https://img.shields.io/badge/Recharts-22B5BF?style=for-the-badge&logo=chartdotjs&logoColor=white)           | `v3.10.1`                                                                                                                  | *(Library)* Responsive charting library rendering category donut graphs and item cost bar charts.              |
-| ![PapaParse](https://img.shields.io/badge/PapaParse-FF6B6B?style=for-the-badge&logo=javascript&logoColor=white)                | `v5.7.0`                                                                                                                | *(Library)* Client-side CSV parser and serializer converting structured receipt data to downloadable spreadsheets.         |                                                                                                                |
-| ![html-to-image](https://img.shields.io/badge/html--to--image-4B32C3?style=for-the-badge&logo=html5&logoColor=white)           | `v1.11.13`                                                                                                              | *(Library)* Rasterization utility capturing Recharts DOM nodes directly into downloadable high-res PNG images.             |                                                                                                                |
-| **Tooling & Environment**                                                                                                      | ![Cursor IDE](https://img.shields.io/badge/Cursor_IDE-000000?style=for-the-badge&logo=cursor&logoColor=white)           | `v3.18.25`                                                                                                                 | AI-native IDE and code editor providing agentic workspace intelligence and refactoring.                        |
-| ![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)                          | `v9.39.5`                                                                                                               | Pluggable JavaScript/TypeScript static code analysis engine using `eslint-config-next v16.3.4`.                            |                                                                                                                |
-| ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)                                   | `v2.39.2`                                                                                                               | Distributed version control system maintaining branch workflows, commits, and project history.                             |                                                                                                                |
-
-
+<table>
+  <thead>
+    <tr>
+      <th width="20%">Category</th>
+      <th width="25%">Tool</th>
+      <th width="15%">Version</th>
+      <th width="40%">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Core UI, Framework & Runtime -->
+    <tr>
+      <td rowspan="3"><b>Core UI, Framework &amp; Runtime</b></td>
+      <td>
+        <a href="https://nextjs.org/">
+          <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js">
+        </a>
+      </td>
+      <td><code>v16.3.4</code></td>
+      <td>Full-stack React framework managing App Router navigation, serverless routes, and client bundling.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://react.dev/">
+          <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React">
+        </a>
+      </td>
+      <td><code>v19.2.8</code></td>
+      <td><i>(Library)</i> Core declarative UI engine managing component state, reactivity, and DOM reconciliation.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://nodejs.org/">
+          <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js">
+        </a>
+      </td>
+      <td><code>v24.11.0</code></td>
+      <td>JavaScript server runtime executing Next.js build scripts and local development server processes.</td>
+    </tr>
+    <!-- Language & Type Safety -->
+    <tr>
+      <td rowspan="2"><b>Language &amp; Type Safety</b></td>
+      <td>
+        <a href="https://www.typescriptlang.org/">
+          <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
+        </a>
+      </td>
+      <td><code>v5.9.3</code></td>
+      <td>Static typing system providing compile-time type safety across props, data structures, and API contracts.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://zod.dev/">
+          <img src="https://img.shields.io/badge/Zod-3E67B1?style=for-the-badge&logo=zod&logoColor=white" alt="Zod">
+        </a>
+      </td>
+      <td><code>v4.5.4</code></td>
+      <td><i>(Library)</i> Declarative TypeScript-first schema declaration and runtime object validation library.</td>
+    </tr>
+    <!-- AI & Multimodal Vision -->
+    <tr>
+      <td rowspan="3"><b>AI &amp; Multimodal Vision</b></td>
+      <td>
+        <a href="https://sdk.vercel.ai/docs">
+          <img src="https://img.shields.io/badge/Vercel_AI_SDK-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel AI SDK">
+        </a>
+      </td>
+      <td><code>v7.0.92</code></td>
+      <td><i>(Library)</i> Model-agnostic AI integration SDK orchestrating structured multimodal outputs via <code>Output.object</code>.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://sdk.vercel.ai/providers/ai-sdk-providers/google-generative-ai">
+          <img src="https://img.shields.io/badge/Google_Provider-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="@ai-sdk/google">
+        </a>
+      </td>
+      <td><code>v4.0.63</code></td>
+      <td><i>(Library)</i> Official Google AI provider binding the Vercel AI SDK to Gemini foundation models.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://aistudio.google.com/">
+          <img src="https://img.shields.io/badge/Google_Gemini-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white" alt="Google Gemini">
+        </a>
+      </td>
+      <td><code>gemini-3.6-flash</code></td>
+      <td>Multimodal vision model parsing receipt images, performing OCR, and extracting structured line items.</td>
+    </tr>
+    <!-- Styling & Component Architecture -->
+    <tr>
+      <td rowspan="5"><b>Styling &amp; Components</b></td>
+      <td>
+        <a href="https://tailwindcss.com/">
+          <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS">
+        </a>
+      </td>
+      <td><code>v4.3.3</code></td>
+      <td>Utility-first CSS styling engine paired with <code>@tailwindcss/postcss</code> for optimized compilation.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://ui.shadcn.com/">
+          <img src="https://img.shields.io/badge/shadcn%2Fui-000000?style=for-the-badge&logo=shadcnui&logoColor=white" alt="shadcn/ui">
+        </a>
+      </td>
+      <td><code>v4.20.1</code></td>
+      <td>Component architecture CLI generating unstyled, customizable design primitives.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://lucide.dev/">
+          <img src="https://img.shields.io/badge/Lucide_React-F56565?style=for-the-badge&logo=lucide&logoColor=white" alt="Lucide React">
+        </a>
+      </td>
+      <td><code>v1.40.0</code></td>
+      <td><i>(Library)</i> Lightweight SVG icon pack providing crisp UI glyphs for actions and status cues.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://cva.style/docs">
+          <img src="https://img.shields.io/badge/CVA-111827?style=for-the-badge&logo=styledcomponents&logoColor=white" alt="Class Variance Authority">
+        </a>
+      </td>
+      <td><code>v0.7.1</code></td>
+      <td><i>(Library)</i> Utility for composing type-safe, variant-driven UI component classes.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://github.com/dcastilho/tailwind-merge">
+          <img src="https://img.shields.io/badge/tailwind--merge-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="tailwind-merge">
+        </a>
+      </td>
+      <td><code>v3.6.0</code></td>
+      <td><i>(Library)</i> Utility function for cleanly merging Tailwind classes without CSS specificity collisions (with <code>clsx v2.1.1</code>).</td>
+    </tr>
+    <!-- Visualization & Export -->
+    <tr>
+      <td rowspan="3"><b>Visualization &amp; Export</b></td>
+      <td>
+        <a href="https://recharts.org/">
+          <img src="https://img.shields.io/badge/Recharts-22B5BF?style=for-the-badge&logo=chartdotjs&logoColor=white" alt="Recharts">
+        </a>
+      </td>
+      <td><code>v3.10.1</code></td>
+      <td><i>(Library)</i> Responsive charting library rendering category donut graphs and item cost bar charts.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://www.papaparse.com/">
+          <img src="https://img.shields.io/badge/PapaParse-FF6B6B?style=for-the-badge&logo=javascript&logoColor=white" alt="PapaParse">
+        </a>
+      </td>
+      <td><code>v5.7.0</code></td>
+      <td><i>(Library)</i> Client-side CSV parser and serializer converting structured receipt data to downloadable spreadsheets.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://github.com/bubkoo/html-to-image">
+          <img src="https://img.shields.io/badge/html--to--image-4B32C3?style=for-the-badge&logo=html5&logoColor=white" alt="html-to-image">
+        </a>
+      </td>
+      <td><code>v1.11.13</code></td>
+      <td><i>(Library)</i> Rasterization utility capturing Recharts DOM nodes directly into downloadable high-res PNG images.</td>
+    </tr>
+    <!-- Development, Linting & Version Control -->
+    <tr>
+      <td rowspan="3"><b>Tooling &amp; Environment</b></td>
+      <td>
+        <a href="https://www.cursor.com/">
+          <img src="https://img.shields.io/badge/Cursor_IDE-000000?style=for-the-badge&logo=cursor&logoColor=white" alt="Cursor IDE">
+        </a>
+      </td>
+      <td><code>v3.18.25</code></td>
+      <td>AI-native IDE and code editor providing agentic workspace intelligence and refactoring.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://eslint.org/">
+          <img src="https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white" alt="ESLint">
+        </a>
+      </td>
+      <td><code>v9.39.5</code></td>
+      <td>Pluggable JavaScript/TypeScript static code analysis engine using <code>eslint-config-next v16.3.4</code>.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://git-scm.com/">
+          <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" alt="Git">
+        </a>
+      </td>
+      <td><code>v2.39.2</code></td>
+      <td>Distributed version control system maintaining branch workflows, commits, and project history.</td>
+    </tr>
+  </tbody>
+</table>
 
 
   
@@ -197,7 +368,6 @@ The following items are not priorities for this project:
 - [ ] Run multi-model evaluation benchmarks (comparing Gemini against alternatives on accuracy, latency, and cost)
 
 <br>
-
 **Post-MVP/Out of Scope**
 
 * User authentication & cloud persistence

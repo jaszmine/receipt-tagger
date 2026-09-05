@@ -368,6 +368,7 @@ The following items are not priorities for this project:
 - [ ] Run multi-model evaluation benchmarks (comparing Gemini against alternatives on accuracy, latency, and cost)
 
 <br>
+
 **Post-MVP/Out of Scope**
 
 * User authentication & cloud persistence

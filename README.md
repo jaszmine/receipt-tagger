@@ -8,6 +8,28 @@ This is an AI-powered multimodal document parsing and expense analysis applicati
 * **Flexible Model Switchboard:** Combines the Vercel AI SDK with Zod schemas to enforce reliable data formats (typed JSON output) while being able to swap AI providers in a single configuration file without touching UI or basic logic.
 * **Interactive Expense Intelligence:** Instantly hydrates client state to provide editable line items, dynamic recalculations, visual category breakdowns via Recharts, and client-side data exports (CSV/PNG).
 
+## Table of Contents
+
+* [Overview](#overview)
+* [Motivation](#motivation)
+* [Key Features](#key-features)
+* [System Architecture/Solution Overview](#system-architecturesolution-overview)
+* [File Structure](#file-structure)
+* [Tech Stack](#tech-stack)
+* [System Scope & Design Decisions](#system-scope--design-decisions)
+  * [Functional Requirements (Core MVP)](#functional-requirements-core-mvp)
+  * [Non-Critical Requirements](#non-critical-requirements)
+  * [Out of Scope](#out-of-scope)
+  * [Model Selection & Evaluation - Comparison Table](#model-selection--evaluation---comparison-table)
+* [Security & Threat Mitigation](#security--threat-mitigation)
+  * [1. Data Privacy & Zero-Retention](#1-data-privacy--zero-retention)
+  * [2. Prompt Injection & Visual Adversarial Attacks](#2-prompt-injection--visual-adversarial-attacks)
+  * [3. Denial of Service & Payload Abuse](#3-denial-of-service--payload-abuse)
+  * [4. API Key & Secret Management](#4-api-key--secret-management)
+* [Storage & Data Handling](#storage--data-handling)
+* [Next Steps](#next-steps)
+* [Literature Review](#literature-review)
+
 
 ## Motivation
 
@@ -15,7 +37,108 @@ This is an AI-powered multimodal document parsing and expense analysis applicati
 
 2) I also wanted to learn more about/get some practice with using LLMs for real-world document OCR (optical character recognition), document parsing, and structured file analysis. 
 
+
+## Key Features
+
+- **Multimodal AI Receipt Parsing**
+  - Automated OCR and document understanding powered by Google Gemini via Vercel AI SDK.
+  - Extracts structured metadata including merchant name, transaction date, currency, line items, subtotal, tax, and total.
+- **Intelligent Expense Auto-Categorization**
+  - Classifies individual line items into standard budget categories (*Food & Dining, Groceries, Transportation, Office, Electronics, Utilities, Health, Other*).
+  - Color-coded category badges for fast scanning.
+- **Interactive & Editable Data Grid**
+  - Live inline editing for item names, prices, and categories to correct misread lines or adjust numbers.
+  - Dynamic row management to add missing items or remove unwanted charges.
+  - Real-time calculation engine that updates subtotals and grand totals immediately upon edit.
+- **Expense Analytics & Visualizations**
+  - **Category Breakdown:** Donut chart illustrating relative spend distribution across categories.
+  - **Itemized Cost Comparison:** Bar chart highlighting individual item price distribution.
+  - Built using responsive, theme-aware Recharts components.
+- **One-Click Export Capabilities**
+  - **CSV Export:** Converts structured receipt records into standard CSV format via PapaParse for bookkeeping, expense reports, or Google Sheets/Excel.
+  - **PNG Chart Capture:** High-resolution DOM-to-image export using `html-to-image` to save clean graphical snapshots of analytics.
+- **Modular & Swappable Architecture**
+  - Decoupled model switchboard (`src/lib/ai.ts`) allowing seamless migration to Azure OpenAI, Anthropic, or open-source vision models (e.g., Qwen-VL) without rewriting application logic.
+  - Strictly typed validation layer using Zod schemas for deterministic JSON parsing.
+
+
+
+## System Architecture/Solution Overview
+
+High-level view of the end-to-end processing pipeline, execution boundaries, and supporting tech stack:
+
+```mermaid
+flowchart TD
+    %% Styling - Light Mode
+    classDef client fill:#f0f9ff,stroke:#0284c7,stroke-width:2px,color:#0f172a;
+    classDef server fill:#f5f3ff,stroke:#7c3aed,stroke-width:2px,color:#0f172a;
+    classDef model fill:#faf5ff,stroke:#a855f7,stroke-width:2px,color:#0f172a;
+    classDef export fill:#ecfdf5,stroke:#10b981,stroke-width:1px,color:#0f172a;
+
+    %% Client Layer
+    subgraph Client ["Client Layer (Next.js 16 · React 19 · Tailwind CSS · shadcn/ui)"]
+        UI_Input["Dropzone (Image / PDF)"]
+        Dashboard["Interactive Dashboard<br/>• Editable Line Items<br/>• Recharts Visuals"]
+        Export["Client Exports<br/>• CSV (PapaParse)<br/>• PNG (html-to-image)"]
+    end
+
+    %% Server Layer
+    subgraph Server ["Serverless Backend (Next.js App Router · Node.js 24)"]
+        API["API Route: /api/parse-receipt"]
+        AI_SDK["Vercel AI SDK (ai + @ai-sdk/google)"]
+        Zod["Zod Schema Validation"]
+    end
+
+    %% Model Layer
+    subgraph AI ["Multimodal Vision"]
+        Gemini["Google Gemini 3.6 Flash<br/>(OCR & Structured Extraction)"]
+    end
+
+    %% Core Data Flow
+    UI_Input -->|"1. Upload Base64"| API
+    API -->|"2. Prompt + Schema"| AI_SDK
+    AI_SDK -->|"3. Vision Inference"| Gemini
+    Gemini -->|"4. Raw JSON"| AI_SDK
+    AI_SDK -->|"5. Validate Contract"| Zod
+    Zod -->|"6. Validated Output"| API
+    API -->|"7. Hydrate State"| Dashboard
+
+    %% Local Actions
+    Dashboard -->|"Inline Edits"| Dashboard
+    Dashboard -->|"Local Download"| Export
+
+    %% Class Application
+    class UI_Input,Dashboard client;
+    class API,AI_SDK,Zod server;
+    class Gemini model;
+    class Export export;
+```
   
+
+## File Structure
+<pre>
+src
+├── app
+│   ├── api
+│   │   └── parse-receipt
+│   │       └── route.ts            # API route for receipt parsing
+│   ├── layout.tsx                  # Root layout component
+│   └── page.tsx                    # Main application page
+├── components
+│   └── receipt
+│       ├── action-bar.tsx          # UI actions for editing/handling receipts
+│       ├── dropzone.tsx            # Drag-and-drop/image upload for receipts
+│       ├── expense-charts.tsx      # Analytics charts for expenses
+│       ├── line-items-table.tsx    # Table of itemized receipt line items
+│       └── receipt-preview.tsx     # Preview and edit receipt UI
+├── lib
+│   ├── ai.ts                       # Model/provider selection (AI switchboard)
+│   ├── schema.ts                   # Zod schemas for receipts and items
+│   └── utils.ts                    # Utility helpers (e.g., classnames)
+</pre>
+
+
+
 
 ## Tech Stack
 
@@ -235,111 +358,11 @@ This is an AI-powered multimodal document parsing and expense analysis applicati
   </tbody>
 </table>
 
-  
-## Key Features
-
-- **Multimodal AI Receipt Parsing**
-  - Automated OCR and document understanding powered by Google Gemini via Vercel AI SDK.
-  - Extracts structured metadata including merchant name, transaction date, currency, line items, subtotal, tax, and total.
-- **Intelligent Expense Auto-Categorization**
-  - Classifies individual line items into standard budget categories (*Food & Dining, Groceries, Transportation, Office, Electronics, Utilities, Health, Other*).
-  - Color-coded category badges for fast scanning.
-- **Interactive & Editable Data Grid**
-  - Live inline editing for item names, prices, and categories to correct misread lines or adjust numbers.
-  - Dynamic row management to add missing items or remove unwanted charges.
-  - Real-time calculation engine that updates subtotals and grand totals immediately upon edit.
-- **Expense Analytics & Visualizations**
-  - **Category Breakdown:** Donut chart illustrating relative spend distribution across categories.
-  - **Itemized Cost Comparison:** Bar chart highlighting individual item price distribution.
-  - Built using responsive, theme-aware Recharts components.
-- **One-Click Export Capabilities**
-  - **CSV Export:** Converts structured receipt records into standard CSV format via PapaParse for bookkeeping, expense reports, or Google Sheets/Excel.
-  - **PNG Chart Capture:** High-resolution DOM-to-image export using `html-to-image` to save clean graphical snapshots of analytics.
-- **Modular & Swappable Architecture**
-  - Decoupled model switchboard (`src/lib/ai.ts`) allowing seamless migration to Azure OpenAI, Anthropic, or open-source vision models (e.g., Qwen-VL) without rewriting application logic.
-  - Strictly typed validation layer using Zod schemas for deterministic JSON parsing.
-
-  
 
 
-## File Structure
-<pre>
-src
-├── app
-│   ├── api
-│   │   └── parse-receipt
-│   │       └── route.ts            # API route for receipt parsing
-│   ├── layout.tsx                  # Root layout component
-│   └── page.tsx                    # Main application page
-├── components
-│   └── receipt
-│       ├── action-bar.tsx          # UI actions for editing/handling receipts
-│       ├── dropzone.tsx            # Drag-and-drop/image upload for receipts
-│       ├── expense-charts.tsx      # Analytics charts for expenses
-│       ├── line-items-table.tsx    # Table of itemized receipt line items
-│       └── receipt-preview.tsx     # Preview and edit receipt UI
-├── lib
-│   ├── ai.ts                       # Model/provider selection (AI switchboard)
-│   ├── schema.ts                   # Zod schemas for receipts and items
-│   └── utils.ts                    # Utility helpers (e.g., classnames)
-</pre>
+## System Scope & Design Decisions
 
-
-
-## System Architecture/Solution Overview
-
-High-level view of the end-to-end processing pipeline, execution boundaries, and supporting tech stack:
-
-```mermaid
-flowchart TD
-    %% Styling - Light Mode
-    classDef client fill:#f0f9ff,stroke:#0284c7,stroke-width:2px,color:#0f172a;
-    classDef server fill:#f5f3ff,stroke:#7c3aed,stroke-width:2px,color:#0f172a;
-    classDef model fill:#faf5ff,stroke:#a855f7,stroke-width:2px,color:#0f172a;
-    classDef export fill:#ecfdf5,stroke:#10b981,stroke-width:1px,color:#0f172a;
-
-    %% Client Layer
-    subgraph Client ["Client Layer (Next.js 16 · React 19 · Tailwind CSS · shadcn/ui)"]
-        UI_Input["Dropzone (Image / PDF)"]
-        Dashboard["Interactive Dashboard<br/>• Editable Line Items<br/>• Recharts Visuals"]
-        Export["Client Exports<br/>• CSV (PapaParse)<br/>• PNG (html-to-image)"]
-    end
-
-    %% Server Layer
-    subgraph Server ["Serverless Backend (Next.js App Router · Node.js 24)"]
-        API["API Route: /api/parse-receipt"]
-        AI_SDK["Vercel AI SDK (ai + @ai-sdk/google)"]
-        Zod["Zod Schema Validation"]
-    end
-
-    %% Model Layer
-    subgraph AI ["Multimodal Vision"]
-        Gemini["Google Gemini 3.6 Flash<br/>(OCR & Structured Extraction)"]
-    end
-
-    %% Core Data Flow
-    UI_Input -->|"1. Upload Base64"| API
-    API -->|"2. Prompt + Schema"| AI_SDK
-    AI_SDK -->|"3. Vision Inference"| Gemini
-    Gemini -->|"4. Raw JSON"| AI_SDK
-    AI_SDK -->|"5. Validate Contract"| Zod
-    Zod -->|"6. Validated Output"| API
-    API -->|"7. Hydrate State"| Dashboard
-
-    %% Local Actions
-    Dashboard -->|"Inline Edits"| Dashboard
-    Dashboard -->|"Local Download"| Export
-
-    %% Class Application
-    class UI_Input,Dashboard client;
-    class API,AI_SDK,Zod server;
-    class Gemini model;
-    class Export export;
-```
-
-
-
-### Requirements:
+### Functional Requirements (Core MVP):
 
 - Free and no credit card required: The model/service must have a free tier with no upfront payment or credit card details (duh).
 - High-accuracy OCR: Must be able to extract text from receipts, invoices, and financial documents, with high precision on printed text, numbers, and tables.
@@ -371,7 +394,7 @@ The following items are not priorities for this project:
 
 
 
-### Model Selection - Comparison Table
+### Model Selection & Evaluation - Comparison Table
 
 
 | Factor | PaddleOCR | Gemini | Qwen | Azure Document Intelligence |
@@ -385,7 +408,7 @@ The following items are not priorities for this project:
 | **Paid Pricing**           | Official API has free daily quota                                  | Pay-as-you-go                              | Pay-as-you-go                                  | $15–20 / 1,000 pages (Read/Layout); $100–110 for prebuilt receipt/invoice          |
 
 
-## Security & Threat Modeling
+## Security & Threat Mitigation
 
 Processing financial documents and user uploads via external multimodal models introduces distinct security and data integrity challenges. This application implements the following controls and mitigation strategies:
 
